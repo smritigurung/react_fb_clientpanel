@@ -17,9 +17,6 @@ class AddClient extends Component {
   onSubmit = (e) => {
     e.preventDefault();
 
-    // const newClient = this.state;
-
-    // const { firestore } = this.props;
     const {
       state,
       props: { firestore, history },
@@ -32,8 +29,9 @@ class AddClient extends Component {
     };
 
     firestore
-      .add({ collection: "clients" }, newClient)
-      .then(() => history.push("/"));
+      .collection("clients")
+      .add(newClient)
+      .then(() => history.push("/")); // redirecting to / route
   };
 
   onChange = (e) => this.setState({ [e.target.name]: e.target.value });
@@ -113,11 +111,10 @@ class AddClient extends Component {
                   value={this.state.balance}
                 />
               </div>
-
               <input
                 type="submit"
                 value="Submit"
-                className="btn btn-primary btn-block"
+                className="btn btn-primary btn-block mt-3"
               />
             </form>
           </div>
