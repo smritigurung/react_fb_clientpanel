@@ -5,28 +5,89 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import Spinner from "../layout/Spinner";
-import classnames from "classnames";
 
 class ClientDetails extends Component {
+  state = {
+    showBalanceUpdate: false,
+    balanceUpdateAmount: "",
+  };
+
+  // Update balance
+  balanceSubmit = (e) => {
+    e.preventDefault();
+
+    const { client, firestore } = this.props;
+    const { balanceUpdateAmount } = this.state;
+
+    const clientUpdate = {
+      balance: parseFloat(balanceUpdateAmount),
+    };
+
+    // Update in firestore
+    firestore.update({ collection: "clients", doc: client.id }, clientUpdate);
+  };
+
+  // Delete client
+  onDeleteClick = () => {
+    const { client, firestore, history } = this.props; // pull client, firestore and history from this.props
+
+    firestore
+      .delete({ collection: "clients", doc: client.id })
+      .then(history.push("/")); // redirecting to homepage
+  };
+
+  // whatever we change, it's gonna set for the balanceUpdateAmount state
+  onChange = (e) => this.setState({ [e.target.name]: e.target.value });
   render() {
     const { client } = this.props;
+    const { showBalanceUpdate, balanceUpdateAmount } = this.state;
+
+    let balanceForm = "";
+    // If balance form should display
+    if (showBalanceUpdate) {
+      balanceForm = (
+        <form onSubmit={this.balanceSubmit}>
+          <div className="input-group">
+            <input
+              type="text"
+              className="form-control"
+              name="balanceUpdateAmount"
+              placeholder="Add New Balance"
+              value={balanceUpdateAmount}
+              onChange={this.onChange}
+            />
+            <div className="input-group-append">
+              <input
+                type="submit"
+                value="Update"
+                className="btn btn-outline-dark"
+              />
+            </div>
+          </div>
+        </form>
+      );
+    } else {
+      balanceForm = null;
+    }
 
     if (client) {
       return (
         <div>
           <div className="row">
-            <div className="col-md-6">
+            <div className="col-lg-10 col-md-9">
               <Link to="/" className="btn btn-link">
                 <i className="fas fa-arrow-circle-left"></i> Back To Dashboard
               </Link>
             </div>
 
-            <div className="col-md-6">
+            <div className="col-lg-2 col-md-3">
               <div className="btn-group float-right">
                 <Link to={`/client/edit/${client.id}`} className="btn btn-dark">
                   Edit
                 </Link>
-                <button className="btn btn-danger">Delete</button>
+                <button onClick={this.onDeleteClick} className="btn btn-danger">
+                  Delete
+                </button>
               </div>
             </div>
           </div>
@@ -48,16 +109,30 @@ class ClientDetails extends Component {
                   <h3 className="pull-right">
                     Balance:{" "}
                     <span
-                      className={classnames({
-                        "text-danger": client.balance > 0,
-                        "text-success": client.balance === 0,
-                      })}
+                      className={
+                        parseFloat(client.balance) === 0
+                          ? "text-success"
+                          : "text-danger"
+                      }
                     >
                       ${parseFloat(client.balance).toFixed(2)}
-                    </span>
+                    </span>{" "}
+                    <small>
+                      <a
+                        href="#!"
+                        onClick={() =>
+                          this.setState({
+                            showBalanceUpdate: !this.state.showBalanceUpdate,
+                          })
+                        }
+                      >
+                        <i className="fas fa-pencil-alt"></i>
+                      </a>
+                    </small>
                   </h3>
 
                   {/* @todo - balanceform */}
+                  {balanceForm}
                 </div>
               </div>
 
