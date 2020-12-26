@@ -6,6 +6,7 @@ import { reduxFirestore, firestoreReducer } from "redux-firestore";
 
 // Reducers
 import notifyReducer from "./reducers/notifyReducer";
+import settingsReducer from "./reducers/settingsReducer";
 
 // Go to Firebase Google and on the left side bar, click "Project Overview" and click on "</>" sign
 // Register your web app and give your project name for example "React Client Panel", and copy the firebaseConfig objects and paste it in here
@@ -44,6 +45,7 @@ const rootReducer = combineReducers({
   firebase: firebaseReducer,
   firestore: firestoreReducer,
   notify: notifyReducer,
+  settings: settingsReducer,
 });
 
 // Create initial state
