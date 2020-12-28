@@ -36,14 +36,14 @@ class Clients extends Component {
       return (
         <div>
           <div className="row">
-            {/* 6 column div */}
-            <div className="col-md-6">
+            {/* 9 column div on large */}
+            <div className="col-lg-9 col-md-6">
               <h2>
                 <i className="fas fa-users" /> Clients
               </h2>
             </div>
-            {/* 6 column div */}
-            <div className="col-md-6">
+            {/* 3 column div on large */}
+            <div className="col-lg-3 col-md-6">
               <h5 className="text-right text-secondary">
                 Total Owed{" "}
                 <span className="text-primary">

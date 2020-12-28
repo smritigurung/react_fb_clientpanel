@@ -48,7 +48,10 @@ class AppNavbar extends Component {
             {/* hamburger icon */}
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse" id="navbarMain">
+          <div
+            className="collapse navbar-collapse justify-content-end"
+            id="navbarMain"
+          >
             <ul className="navbar-nav mr-auto">
               {/* if isAuthenticated, then we render something */}
               {isAuthenticated ? (

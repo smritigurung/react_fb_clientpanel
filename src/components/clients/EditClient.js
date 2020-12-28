@@ -112,7 +112,10 @@ class EditClient extends Component {
                     disabled={disableBalanceOnEdit}
                   />
                 </div>
-                <button type="submit" className="btn btn-primary btn-block">
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-block mt-3 w-100"
+                >
                   Submit
                 </button>
               </form>
